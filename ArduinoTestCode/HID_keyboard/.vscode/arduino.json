@@ -1,0 +1,6 @@
+{
+    "port": "/dev/cu.usbmodem141242",
+    "board": "sandeepmistry:nRF5:BBCmicrobit",
+    "configuration": "softdevice=s110",
+    "sketch": "HID_keyboard.ino"
+}
