@@ -3,12 +3,14 @@
         {
             "name": "Mac",
             "includePath": [
-                "/Users/sundeqing/Library/Arduino15/packages/sandeepmistry/hardware/nRF5/0.5.1/cores/nRF5"
+                "/Users/sundeqing/Library/Arduino15/packages/sandeepmistry/hardware/nRF5/0.5.1/cores/nRF5",
+                "/Users/sundeqing/Documents/Arduino/libraries/BLEPeripheral/src"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": false,
                 "path": [
-                    "/Users/sundeqing/Library/Arduino15/packages/sandeepmistry/hardware/nRF5/0.5.1/cores/nRF5"
+                    "/Users/sundeqing/Library/Arduino15/packages/sandeepmistry/hardware/nRF5/0.5.1/cores/nRF5",
+                    "/Users/sundeqing/Documents/Arduino/libraries/BLEPeripheral/src"
                 ]
             },
             "intelliSenseMode": "clang-x64",
