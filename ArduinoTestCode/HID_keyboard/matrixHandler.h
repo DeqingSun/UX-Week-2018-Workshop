@@ -14,8 +14,10 @@ class MatrixHandler {
               clear(void),
               rowHandler(void);
     void      show(const uint8_t bitmap[]);
+    void      scroll(const uint32_t bitmap[],int offset);
 
-    static const uint8_t EMPTYHEART[5],  HEART[5], NO[5], YES[5];
+    static const uint8_t EMPTYHEART[5],  HEART[5], NO[5], YES[5], SIGNAL[8][5];
+    static const uint32_t UXWEEK[5];
   private:
     void startTimer();
 

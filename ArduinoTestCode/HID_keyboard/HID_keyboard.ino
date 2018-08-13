@@ -55,8 +55,8 @@ void setup() {
 
   matrix.begin();
   //matrix.show(matrix.YES);
-  uint8_t img[] = {0b00110, 0b00101, 0b00110, 0b00101, 0b00110};
-  matrix.show(img);
+  //uint8_t img[] = {0b00110, 0b00101, 0b00110, 0b00101, 0b00110};
+  //matrix.show(img);
 
   //pinMode(0, OUTPUT);
   pinMode(5, INPUT);
@@ -65,12 +65,28 @@ void setup() {
 void loop() {
 
   static unsigned long previousSerialMillis = 0;
+  static bool welcomeMessage = true;
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousSerialMillis >= 1000) {
-    previousSerialMillis = currentMillis;
-    //digitalWrite(0, !digitalRead(0));
+  if (welcomeMessage) {
+    if (currentMillis - previousSerialMillis >= 200) {  //
+      static int scrollIndex = 32;
+      previousSerialMillis = currentMillis;
+      matrix.scroll(matrix.UXWEEK, scrollIndex);
+      scrollIndex--;
+      if (scrollIndex < -5) welcomeMessage = false;
+    }
+  } else {
+    if (currentMillis - previousSerialMillis >= 300) {  //show signal animation
+      static int signalIndex = 0;
+      previousSerialMillis = currentMillis;
+      matrix.show(matrix.SIGNAL[signalIndex]);
+      signalIndex++;
+      if (signalIndex >= 8) signalIndex = 0;
+    }
   }
+
+
 
   BLECentral central = bleHIDPeripheral.central();
 

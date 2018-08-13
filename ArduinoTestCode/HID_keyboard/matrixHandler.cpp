@@ -148,7 +148,29 @@ void MatrixHandler::show(const uint8_t bitmap[]) {
   }
 }
 
+void MatrixHandler::scroll(const uint32_t bitmap[], int offset) {
+  clear();
+
+  uint8_t counter = 0;
+  for (int i = 0; i < 5; i++) {
+    uint32_t lineContent = bitmap[i];
+    for (int j = 0; j < 5; j++) {
+      if (lineContent & (1 << (4 - j + offset))) {
+        matrix_buffer[pixel_to_row[counter]][pixel_to_col[counter]] = 1;
+      }
+      counter++;
+    }
+  }
+}\
+
 /*************************************************************************************************/
+const uint32_t MatrixHandler::UXWEEK[5] =
+{ 0b1001010100010001011110111101001,
+  0b1001010100010001010000100001010,
+  0b1001001000010101011110111101100,
+  0b1001010100010101010000100001010,
+  0b0110010100001010011110111101001,
+};
 
 const uint8_t MatrixHandler::EMPTYHEART[5] =
 { B01010,
@@ -180,4 +202,58 @@ const uint8_t MatrixHandler::YES[5] =
   B00010,
   B10100,
   B01000,
+};
+
+const uint8_t MatrixHandler::SIGNAL[8][5] =
+{
+  { B00000,
+    B00000,
+    B00000,
+    B00100,
+    B01110,
+  },
+  { B00000,
+    B00000,
+    B00000,
+    B01110,
+    B10101,
+  },
+  { B00000,
+    B00000,
+    B01110,
+    B10001,
+    B00100,
+  },
+  { B00000,
+    B01110,
+    B10001,
+    B00000,
+    B00100,
+  },
+  { B01110,
+    B10001,
+    B00000,
+    B00000,
+    B00100,
+  },
+  {
+    B00000,
+    B01110,
+    B10001,
+    B00000,
+    B00100,
+  },
+  {
+    B00000,
+    B00000,
+    B01110,
+    B10001,
+    B00100,
+  },
+  { B00000,
+    B00000,
+    B00000,
+    B01110,
+    B10101,
+  },
 };
