@@ -15,6 +15,12 @@ BLEKeyboard bleKeyboard;
 
 MatrixHandler matrix;
 
+unsigned char inputPins[5] = {0, 1, 2, 5, 11};
+unsigned char keyMapping[5] = {'0', '1', '2', 'a', 'b'};
+bool buttonPressed[5] = {false};
+
+bool welcomeMessage = true;
+
 void setup() {
   Serial.begin(9600);
 
@@ -54,38 +60,34 @@ void setup() {
   Serial.println(deviceName);
 
   matrix.begin();
-  //matrix.show(matrix.YES);
-  //uint8_t img[] = {0b00110, 0b00101, 0b00110, 0b00101, 0b00110};
-  //matrix.show(img);
 
-  //pinMode(0, OUTPUT);
-  pinMode(5, INPUT);
+  for (int i = 0; i < 5; i++) {
+    pinMode(inputPins[i], INPUT_PULLUP);
+  }
+
 }
 
 void loop() {
 
   static unsigned long previousSerialMillis = 0;
-  static bool welcomeMessage = true;
-  unsigned long currentMillis = millis();
 
   if (welcomeMessage) {
-    if (currentMillis - previousSerialMillis >= 200) {  //
+    if (millis() - previousSerialMillis >= 200) {  //
       static int scrollIndex = 32;
-      previousSerialMillis = currentMillis;
+      previousSerialMillis = millis();
       matrix.scroll(matrix.UXWEEK, scrollIndex);
       scrollIndex--;
       if (scrollIndex < -5) welcomeMessage = false;
     }
   } else {
-    if (currentMillis - previousSerialMillis >= 300) {  //show signal animation
+    if (millis() - previousSerialMillis >= 300) {  //show signal animation
       static int signalIndex = 0;
-      previousSerialMillis = currentMillis;
+      previousSerialMillis = millis();
       matrix.show(matrix.SIGNAL[signalIndex]);
       signalIndex++;
       if (signalIndex >= 8) signalIndex = 0;
     }
   }
-
 
 
   BLECentral central = bleHIDPeripheral.central();
@@ -94,15 +96,43 @@ void loop() {
     // central connected to peripheral
     Serial.print(F("Connected to central: "));
     Serial.println(central.address());
+    matrix.show(matrix.YES);
 
     while (central.connected()) {
 
-      if (digitalRead(5) == LOW) {
-
-        Serial.println("Press");
-        //central.disconnect();
+      for (int i = 0; i < 5; i++) {
+        bool oneKeyPressed = !digitalRead(inputPins[i]);
+        if (oneKeyPressed != buttonPressed[i]) {
+          Serial.print(F("Pin "));
+          Serial.print(inputPins[i]);
+          if (oneKeyPressed) {
+            Serial.println(F(" pressed"));
+          } else {
+            Serial.println(F(" released"));
+          }
+          buttonPressed[i] = oneKeyPressed;
+        }
       }
 
+      //check whether AB is holddown at same time
+      {
+        static bool ABwasDown = false;
+        static unsigned long ABDownTime;
+        bool ABisDown = (buttonPressed[3] && buttonPressed[4]);
+        if (ABwasDown != ABisDown) {
+          if (ABisDown) {
+            Serial.println(F("AB both pressed"));
+            ABDownTime = millis();
+          }
+          ABwasDown = ABisDown;
+        } else if (ABisDown) { //holding
+          if ((signed int)(millis() - ABDownTime) > 3000) {
+            Serial.println(F("AB long hold"));
+            central.disconnect();
+            ABDownTime = millis();
+          }
+        }
+      }
 
       if (Serial.available() > 0) {
         // read in character
