@@ -148,6 +148,11 @@ void MatrixHandler::show(const uint8_t bitmap[]) {
   }
 }
 
+void MatrixHandler::setPixel(int x, int y, int c) {
+  int counter = y * 5 + x;
+  matrix_buffer[pixel_to_row[counter]][pixel_to_col[counter]] = c;
+}
+
 void MatrixHandler::scroll(const uint32_t bitmap[], int offset) {
   clear();
 
@@ -197,11 +202,11 @@ const uint8_t MatrixHandler::NO[5] =
 };
 
 const uint8_t MatrixHandler::YES[5] =
-{ B00000,
-  B00001,
+{ B00001,
   B00010,
   B10100,
   B01000,
+  B00000,
 };
 
 const uint8_t MatrixHandler::SIGNAL[8][5] =

@@ -108,9 +108,11 @@ void loop() {
           if (oneKeyPressed) {
             Serial.println(F(" pressed"));
             bleKeyboard.press(keyCodes[i], 0);
+            matrix.setPixel(i, 4, 1);
           } else {
             Serial.println(F(" released"));
             bleKeyboard.release(keyCodes[i], 0);
+            matrix.setPixel(i, 4, 0);
           }
           buttonPressed[i] = oneKeyPressed;
         }

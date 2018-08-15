@@ -15,6 +15,7 @@ class MatrixHandler {
               rowHandler(void);
     void      show(const uint8_t bitmap[]);
     void      scroll(const uint32_t bitmap[],int offset);
+    void      setPixel(int x, int y, int c);
 
     static const uint8_t EMPTYHEART[5],  HEART[5], NO[5], YES[5], SIGNAL[8][5];
     static const uint32_t UXWEEK[5];
