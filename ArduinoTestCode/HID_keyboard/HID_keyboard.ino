@@ -18,13 +18,15 @@ MatrixHandler matrix;
 
 unsigned char inputPins[5] = {0, 1, 2, 5, 11};
 unsigned char keyCodes[5] = {KEYCODE_0, KEYCODE_1, KEYCODE_2, KEYCODE_A, KEYCODE_B};
-bool buttonPressed[5] = {false};
+bool buttonPressedRaw[5] = {false};
+bool buttonPressedDebonced[5] = {false};
+unsigned long previousKeyCheckMillis[5] = {0};
 
 bool welcomeMessage = true;
 
 void setup() {
   delay(100);
-  
+
   Serial.begin(9600);
 
   // clear bond store data
@@ -122,31 +124,37 @@ void loop() {
         if (i == 2) continue; //don't use pin2 as input
 #endif
         bool oneKeyPressed = !digitalRead(inputPins[i]);
-        if (oneKeyPressed != buttonPressed[i]) {
-          Serial.print(F("Pin "));
-          Serial.print(inputPins[i]);
-          if (oneKeyPressed) {
-            Serial.println(F(" pressed"));
-            bleKeyboard.press(keyCodes[i], 0);
-            matrix.setPixel(i, 4, 1);
-          } else {
-            Serial.println(F(" released"));
-            bleKeyboard.release(keyCodes[i], 0);
-            matrix.setPixel(i, 4, 0);
+        if (oneKeyPressed != buttonPressedRaw[i]) {
+          previousKeyCheckMillis[i] = millis();
+          buttonPressedRaw[i] = oneKeyPressed;
+        }
+        if (oneKeyPressed != buttonPressedDebonced[i]) {
+          if ((signed long)(millis() - previousKeyCheckMillis[i]) > 50) {
+            buttonPressedDebonced[i] = oneKeyPressed;
+            Serial.print(F("Pin "));
+            Serial.print(inputPins[i]);
+            if (oneKeyPressed) {
+              Serial.println(F(" pressed"));
+              bleKeyboard.press(keyCodes[i], 0);
+              matrix.setPixel(i, 4, 1);
+            } else {
+              Serial.println(F(" released"));
+              bleKeyboard.release(keyCodes[i], 0);
+              matrix.setPixel(i, 4, 0);
+            }
           }
-          buttonPressed[i] = oneKeyPressed;
         }
       }
 
 #ifdef PIN2_OUTPUT
-      digitalWrite(2, buttonPressed[0] || buttonPressed[1]); //lit LED when 0 or 1 is connected.
+      digitalWrite(2, buttonPressedDebonced[0] || buttonPressedDebonced[1]); //lit LED when 0 or 1 is connected.
 #endif
 
       //check whether AB is holddown at same time
       {
         static bool ABwasDown = false;
         static unsigned long ABDownTime;
-        bool ABisDown = (buttonPressed[3] && buttonPressed[4]);
+        bool ABisDown = (buttonPressedDebonced[3] && buttonPressedDebonced[4]);
         if (ABwasDown != ABisDown) {
           if (ABisDown) {
             Serial.println(F("AB both pressed"));
