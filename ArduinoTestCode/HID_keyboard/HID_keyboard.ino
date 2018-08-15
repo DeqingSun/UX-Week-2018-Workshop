@@ -6,6 +6,7 @@
 #include "matrixHandler.h"
 
 //#define ANDROID_CENTRAL
+#define PIN2_OUTPUT
 
 // create peripheral instance, see pinouts above
 BLEHIDPeripheral bleHIDPeripheral = BLEHIDPeripheral();
@@ -22,6 +23,8 @@ bool buttonPressed[5] = {false};
 bool welcomeMessage = true;
 
 void setup() {
+  delay(100);
+  
   Serial.begin(9600);
 
   // clear bond store data
@@ -59,11 +62,25 @@ void setup() {
   Serial.print(F("Device Name: "));
   Serial.println(deviceName);
 
+#ifdef ANDROID_CENTRAL
+  Serial.println(F("Android Central"));
+#endif
+
+#ifdef PIN2_OUTPUT
+  Serial.println(F("2 Input, 1 Ouput"));
+#else
+  Serial.println(F("3 Input"));
+#endif
+
   matrix.begin();
 
   for (int i = 0; i < 5; i++) {
     pinMode(inputPins[i], INPUT_PULLUP);
   }
+
+#ifdef PIN2_OUTPUT
+  pinMode(inputPins[2], OUTPUT);
+#endif
 
 }
 
@@ -101,6 +118,9 @@ void loop() {
     while (central.connected()) {
 
       for (int i = 0; i < 5; i++) {
+#ifdef PIN2_OUTPUT
+        if (i == 2) continue; //don't use pin2 as input
+#endif
         bool oneKeyPressed = !digitalRead(inputPins[i]);
         if (oneKeyPressed != buttonPressed[i]) {
           Serial.print(F("Pin "));
@@ -117,6 +137,10 @@ void loop() {
           buttonPressed[i] = oneKeyPressed;
         }
       }
+
+#ifdef PIN2_OUTPUT
+      digitalWrite(2, buttonPressed[0] || buttonPressed[1]); //lit LED when 0 or 1 is connected.
+#endif
 
       //check whether AB is holddown at same time
       {
