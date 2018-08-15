@@ -6,7 +6,7 @@
 #include "matrixHandler.h"
 
 //#define ANDROID_CENTRAL
-#define PIN2_OUTPUT
+//#define PIN2_OUTPUT
 
 // create peripheral instance, see pinouts above
 BLEHIDPeripheral bleHIDPeripheral = BLEHIDPeripheral();
