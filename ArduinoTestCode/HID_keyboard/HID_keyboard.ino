@@ -16,7 +16,7 @@ BLEKeyboard bleKeyboard;
 MatrixHandler matrix;
 
 unsigned char inputPins[5] = {0, 1, 2, 5, 11};
-unsigned char keyMapping[5] = {'0', '1', '2', 'a', 'b'};
+unsigned char keyCodes[5] = {KEYCODE_0, KEYCODE_1, KEYCODE_2, KEYCODE_A, KEYCODE_B};
 bool buttonPressed[5] = {false};
 
 bool welcomeMessage = true;
@@ -107,8 +107,10 @@ void loop() {
           Serial.print(inputPins[i]);
           if (oneKeyPressed) {
             Serial.println(F(" pressed"));
+            bleKeyboard.press(keyCodes[i], 0);
           } else {
             Serial.println(F(" released"));
+            bleKeyboard.release(keyCodes[i], 0);
           }
           buttonPressed[i] = oneKeyPressed;
         }
@@ -128,20 +130,12 @@ void loop() {
         } else if (ABisDown) { //holding
           if ((signed int)(millis() - ABDownTime) > 3000) {
             Serial.println(F("AB long hold"));
+            bleKeyboard.releaseAll();
             central.disconnect();
             ABDownTime = millis();
+            NVIC_SystemReset();
           }
         }
-      }
-
-      if (Serial.available() > 0) {
-        // read in character
-        char c = Serial.read();
-
-        Serial.print(F("c = "));
-        Serial.println(c);
-
-        bleKeyboard.print(c);
       }
     }
 
