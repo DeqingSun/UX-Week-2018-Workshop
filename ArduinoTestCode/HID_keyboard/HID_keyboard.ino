@@ -7,6 +7,14 @@
 
 //#define ANDROID_CENTRAL
 //#define PIN2_OUTPUT
+#define USE_ACCEL
+
+#ifdef USE_ACCEL
+#include "Wire.h"
+#include "MMA8653.h"
+MMA8653 accel;
+unsigned char accelKeyCodes[8] = {KEYCODE_Q, KEYCODE_W, KEYCODE_E, KEYCODE_R, KEYCODE_T, KEYCODE_Y, KEYCODE_U, KEYCODE_I};
+#endif
 
 // create peripheral instance, see pinouts above
 BLEHIDPeripheral bleHIDPeripheral = BLEHIDPeripheral();
@@ -23,6 +31,8 @@ bool buttonPressedDebonced[5] = {false};
 unsigned long previousKeyCheckMillis[5] = {0};
 
 bool welcomeMessage = true;
+
+
 
 void setup() {
   delay(100);
@@ -48,8 +58,8 @@ void setup() {
   }
 
   char passcode[16];
-  sprintf(passcode, "%06d", addressLow32bit&0xFFFF);
-  
+  sprintf(passcode, "%06d", addressLow32bit & 0xFFFF);
+
   bleHIDPeripheral.enableBond(DISPLAY_PASSKEY);
 
   bleHIDPeripheral.setEventHandler(BLEPasskeyReceived, showPasskey);
@@ -72,7 +82,7 @@ void setup() {
   Serial.println(deviceName);
   Serial.print(F("Passcode: "));
   Serial.println(passcode);
-  
+
 #ifdef ANDROID_CENTRAL
   Serial.println(F("Android Central"));
 #endif
@@ -91,6 +101,10 @@ void setup() {
 
 #ifdef PIN2_OUTPUT
   pinMode(inputPins[2], OUTPUT);
+#endif
+
+#ifdef USE_ACCEL
+  accel.begin(false, 2); // 8-bit mode, 2g range
 #endif
 
 }
@@ -157,6 +171,9 @@ void loop() {
     Serial.print(F("Connected to central: "));
     Serial.println(central.address());
     matrix.show(matrix.YES);
+#ifdef ANDROID_CENTRAL
+    matrix.setPixel(0, 1, 1);
+#endif
 
     while (central.connected()) {
 
@@ -215,6 +232,62 @@ void loop() {
           }
         }
       }
+
+#ifdef USE_ACCEL
+      {
+        static int previousOctant = 0;
+        static unsigned long accelSampleMillis = 0;
+        if ((signed int)(millis() - accelSampleMillis) > 50) {
+          accelSampleMillis = millis();
+          accel.update();
+          int x = accel.getX();
+          int y = accel.getY();
+          int octant = 0;
+          if (x == 0) {
+            if (y <= 0) octant = 0;
+            else octant = 4;
+          } else {
+            int slope = y * 256 / x;
+            if (y <= 0) {
+              if (slope < -443 || slope > 443) { //256*tan60
+                octant = 0;
+              } else if (slope < -148) {//256*tan30
+                octant = 7;
+              } else if (slope < 0) {
+                octant = 6;
+              } else if (slope == 0) {
+                if (x < 0) octant = 2;
+                else octant = 6;
+              } else if (slope < 148) {
+                octant = 2;
+              } else {
+                octant = 1;
+              }
+            } else {
+              if (slope < -443 || slope > 443) { //256*tan60
+                octant = 4;
+              } else if (slope < -148) {//256*tan30
+                octant = 3;
+              } else if (slope < 0) {
+                octant = 2;
+              } else if (slope < 148) { //slope will not be 0
+                octant = 6;
+              } else {
+                octant = 5;
+              }
+            }
+          }
+          if (previousOctant != octant) {
+            bleKeyboard.press(accelKeyCodes[octant], 0);
+            bleKeyboard.release(accelKeyCodes[octant], 0);
+            previousOctant = octant;
+          }
+
+          //Serial.print(accel.getX()); Serial.print(" , "); Serial.print(accel.getY()); Serial.print(", "); Serial.println(accel.getZ());
+          //Serial.println(octant);
+        }
+      }
+#endif
     }
 
     // central disconnected
