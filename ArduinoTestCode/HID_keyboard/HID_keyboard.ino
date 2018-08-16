@@ -29,9 +29,6 @@ void setup() {
 
   Serial.begin(9600);
 
-  // clear bond store data
-  bleHIDPeripheral.clearBondStoreData();
-
 #ifdef ANDROID_CENTRAL
   bleHIDPeripheral.setReportIdOffset(1);
 #endif
@@ -108,6 +105,29 @@ void loop() {
     }
   }
 
+  //check whether AB is holddown at same time
+  {
+    static bool ABwasDown = false;
+    static unsigned long ABDownTime;
+    bool ABisDown = ((!digitalRead(5)) && (!digitalRead(11)));
+    if (ABwasDown != ABisDown) {
+      if (ABisDown) {
+        Serial.println(F("AB both pressed"));
+        ABDownTime = millis();
+      }
+      ABwasDown = ABisDown;
+    } else if (ABisDown) { //holding
+      if ((signed int)(millis() - ABDownTime) > 3000) {
+        Serial.println(F("AB long hold"));
+        // clear bond store data
+        bleHIDPeripheral.clearBondStoreData();
+        ABDownTime = millis();
+        delay(100);
+        NVIC_SystemReset();
+      }
+    }
+  }
+
 
   BLECentral central = bleHIDPeripheral.central();
 
@@ -167,6 +187,9 @@ void loop() {
             bleKeyboard.releaseAll();
             central.disconnect();
             ABDownTime = millis();
+            // clear bond store data
+            bleHIDPeripheral.clearBondStoreData();
+            delay(100);
             NVIC_SystemReset();
           }
         }
