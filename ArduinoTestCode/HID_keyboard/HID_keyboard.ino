@@ -47,6 +47,9 @@ void setup() {
     deviceName[8 + i * 2 + 1] = toHex(d);
   }
 
+  bleHIDPeripheral.enableBond(DISPLAY_PASSKEY);
+  bleHIDPeripheral.setEventHandler(BLEPasskeyReceived, showPasskey);
+
   bleHIDPeripheral.setLocalName(deviceName);
   bleHIDPeripheral.setDeviceName(deviceName);
   bleHIDPeripheral.addHID(bleKeyboard);
@@ -82,6 +85,15 @@ void setup() {
 #endif
 
 }
+
+
+void showPasskey(BLECentral& central) {
+  // passkey generated event handler
+  Serial.print("Please type this passkey on the other device = ");
+  Serial.println(bleHIDPeripheral.getPasskey());
+}
+
+
 
 void loop() {
 
