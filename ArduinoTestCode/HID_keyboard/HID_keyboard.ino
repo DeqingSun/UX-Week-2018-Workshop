@@ -47,7 +47,11 @@ void setup() {
     deviceName[8 + i * 2 + 1] = toHex(d);
   }
 
+  char passcode[16];
+  sprintf(passcode, "%06d", addressLow32bit&0xFFFF);
+  
   bleHIDPeripheral.enableBond(DISPLAY_PASSKEY);
+
   bleHIDPeripheral.setEventHandler(BLEPasskeyReceived, showPasskey);
 
   bleHIDPeripheral.setLocalName(deviceName);
@@ -56,6 +60,9 @@ void setup() {
 
   bleHIDPeripheral.begin();
 
+  bleHIDPeripheral.setStaticPasskey(passcode);
+
+
   Serial.println();
   Serial.println(F("Experience Prototyping with IoT Devices"));
   Serial.println(F("UX Week 2018"));
@@ -63,7 +70,9 @@ void setup() {
 
   Serial.print(F("Device Name: "));
   Serial.println(deviceName);
-
+  Serial.print(F("Passcode: "));
+  Serial.println(passcode);
+  
 #ifdef ANDROID_CENTRAL
   Serial.println(F("Android Central"));
 #endif
