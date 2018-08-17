@@ -7,7 +7,7 @@
 
 //#define ANDROID_CENTRAL
 //#define PIN2_OUTPUT
-#define USE_ACCEL
+//#define USE_ACCEL
 
 #ifdef USE_ACCEL
 #include "Wire.h"
@@ -243,6 +243,8 @@ void loop() {
 
 #ifdef USE_ACCEL
       {
+        static bool angleChangeLED = false;
+        static unsigned long angleChangeLEDMillis = 0;
         static int previousOctant = 0;
         static unsigned long accelSampleMillis = 0;
         if ((signed int)(millis() - accelSampleMillis) > 50) {
@@ -289,11 +291,20 @@ void loop() {
             bleKeyboard.press(accelKeyCodes[octant], 0);
             bleKeyboard.release(accelKeyCodes[octant], 0);
             previousOctant = octant;
+            angleChangeLED = true;
+            matrix.setPixel(2, 0, 1);
+            angleChangeLEDMillis = millis(iuiqwqiuytyuiq);
           }
 
           //Serial.print(accel.getX()); Serial.print(" , "); Serial.print(accel.getY()); Serial.print(", "); Serial.println(accel.getZ());
           //Serial.println(octant);
         }
+
+        if (angleChangeLED && ((millis() - angleChangeLEDMillis) > 100)) {
+          angleChangeLED = false;
+          matrix.setPixel(2, 0, 0);
+        }
+
       }
 #endif
     }
