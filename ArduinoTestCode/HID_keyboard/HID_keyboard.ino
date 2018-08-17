@@ -293,7 +293,7 @@ void loop() {
             previousOctant = octant;
             angleChangeLED = true;
             matrix.setPixel(2, 0, 1);
-            angleChangeLEDMillis = millis(iuiqwqiuytyuiq);
+            angleChangeLEDMillis = millis();
           }
 
           //Serial.print(accel.getX()); Serial.print(" , "); Serial.print(accel.getY()); Serial.print(", "); Serial.println(accel.getZ());
