@@ -22,6 +22,14 @@ You can open this page on your mobile device for easier navigation
 |[Cup (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=cup)|accel_3IO.hex|
 |[Steering wheel (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=steeringWheel)|accel_3IO.hex|
 
+## Pairing instruction
+
+[Mac](https://deqingsun.github.io/UX-Week-2018-Workshop/pair/Pair%20Microbit%20with%20Mac.pdf)
+
+[iOS](https://deqingsun.github.io/UX-Week-2018-Workshop/pair/Pair%20Microbit%20with%20iOS.pdf)
+
+[Android](https://deqingsun.github.io/UX-Week-2018-Workshop/pair/Pair%20Microbit%20with%20Android.pdf)
+
 ## Key Mapping
 
 | default_3IO.hex | LED_2IO.hex | accel_3IO.hex |
