@@ -2,7 +2,7 @@
 Experience Prototyping with IoT Devices
 
 ## Short link of this page
-###[tiny.cc/uxweek](http://tiny.cc/uxweek)
+[tiny.cc/uxweek](http://tiny.cc/uxweek)
 
 ## Key Mapping
 
