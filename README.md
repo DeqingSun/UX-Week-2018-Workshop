@@ -17,7 +17,7 @@ You can open this page on your mobile device for easier navigation
 
 | default_3IO.hex | LED_2IO.hex | accel_3IO.hex |
 |---|---|---|
-| ![default_3IO.hex](https://deqingsun.github.io/UX-Week-2018-Workshop/connections/conn_3IO.png){:height="350px"} | ![LED_2IO.hex](https://deqingsun.github.io/UX-Week-2018-Workshop/connections/conn_2IO.png){:height="350px"} | ![accel_3IO.hex](https://deqingsun.github.io/UX-Week-2018-Workshop/connections/conn_3IO_ACCEL.png){:height="350px"} |
+| ![default_3IO.hex](https://deqingsun.github.io/UX-Week-2018-Workshop/connections/conn_3IO.png){:height="350px" width="258px"} | ![LED_2IO.hex](https://deqingsun.github.io/UX-Week-2018-Workshop/connections/conn_2IO.png){:height="350px" width="266px"} | ![accel_3IO.hex](https://deqingsun.github.io/UX-Week-2018-Workshop/connections/conn_3IO_ACCEL.png){:height="350px" width="391px"} |
 
 ## Firmware Archive
 
