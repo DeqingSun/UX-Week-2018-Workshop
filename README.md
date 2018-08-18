@@ -1,5 +1,11 @@
-# UX-Week-2018-Workshop
-Experience Prototyping with IoT Devices
+# Experience Prototyping with IoT Devices
+
+###Peiqi Su, Deqing Sun 
+
+### UX Week, 2018
+
+
+
 
 ## Short link of this page
 
