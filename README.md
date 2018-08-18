@@ -1,6 +1,6 @@
 # Experience Prototyping with IoT Devices
 
-###Peiqi Su, Deqing Sun 
+### Peiqi Su, Deqing Sun 
 
 ### UX Week, 2018
 
