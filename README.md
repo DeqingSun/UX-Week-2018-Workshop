@@ -2,7 +2,16 @@
 Experience Prototyping with IoT Devices
 
 ## Short link of this page
-[tiny.cc/uxweek](http://tiny.cc/uxweek)
+
+Github: [tiny.cc/uxweek](http://tiny.cc/uxweek)
+
+Github IO: [tiny.cc/uxweekpage](http://tiny.cc/uxweekpage)
+
+## Demo code
+
+You can open this page on your mobile device for easier navigation
+
+
 
 ## Key Mapping
 
