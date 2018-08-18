@@ -1,6 +1,9 @@
 # UX-Week-2018-Workshop
 Experience Prototyping with IoT Devices
 
+## Short link of this page
+###[tiny.cc/uxweek](http://tiny.cc/uxweek)
+
 ## Key Mapping
 
 | default_3IO.hex | LED_2IO.hex | accel_3IO.hex |
