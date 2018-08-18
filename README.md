@@ -3,7 +3,9 @@ Experience Prototyping with IoT Devices
 
 ## Key Mapping
 
-
+| default_3IO.hex | LED_2IO.hex | accel_3IO.hex |
+|---|---|---|
+| ![default_3IO.hex](https://github.com/DeqingSun/UX-Week-2018-Workshop/blob/master/connections/conn_3IO.png?raw=true) | ![LED_2IO.hex](https://github.com/DeqingSun/UX-Week-2018-Workshop/blob/master/connections/conn_2IO.png?raw=true) | ![accel_3IO.hex](https://github.com/DeqingSun/UX-Week-2018-Workshop/blob/master/connections/conn_3IO_ACCEL.png?raw=true) |
 
 ## Firmware Archive
 
