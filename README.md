@@ -24,7 +24,7 @@ You can open this page on your mobile device for easier navigation
 |[Dash Button (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=dashButton)|LED_2IO.hex|
 |[Timer (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=timer)|default_3IO.hex|
 |[Hue (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=hue)|default_3IO.hex|
-|[Music (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=music)|accel_3IO.hex|
+|[Music (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=music) Not work on iOS|accel_3IO.hex|
 |[Cup (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=cup)|accel_3IO.hex|
 |[Steering wheel (Snap)](https://snap.berkeley.edu/snapsource/snap.html#present:Username=deqing&ProjectName=steeringWheel)|accel_3IO.hex|
 
