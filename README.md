@@ -17,6 +17,8 @@ Github IO: [tiny.cc/uxweekpage](http://tiny.cc/uxweekpage)
 
 You can open this page on your mobile device for easier navigation
 
+[Assembly instructions](https://deqingsun.github.io/UX-Week-2018-Workshop/instruction/)
+
 |Demo|Recommended firmware| Instruction |
 |---|---|---|
 |[Function test (P5JS)](https://deqingsun.github.io/UX-Week-2018-Workshop/demo/PressTest/)|Any| |
