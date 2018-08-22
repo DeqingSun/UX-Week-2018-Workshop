@@ -19,6 +19,10 @@ You can open this page on your mobile device for easier navigation
 
 [Assembly instructions](https://deqingsun.github.io/UX-Week-2018-Workshop/instruction/)
 
+You may use this image to create your own dash button script with Snap!.
+
+![bubble](https://deqingsun.github.io/UX-Week-2018-Workshop/demo/bubble.gif)
+
 |Demo|Recommended firmware| Instruction |
 |---|---|---|
 |[Function test (P5JS)](https://deqingsun.github.io/UX-Week-2018-Workshop/demo/PressTest/)|Any| |
