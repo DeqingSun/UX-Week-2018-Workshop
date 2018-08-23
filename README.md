@@ -4,7 +4,7 @@
 
 ### UX Week, 2018
 
-
+[workshop slides](https://drive.google.com/open?id=1WvWnZPqeclFLPGkDRFRjNSSOHK1xHbTW)
 
 
 ## Short link of this page
