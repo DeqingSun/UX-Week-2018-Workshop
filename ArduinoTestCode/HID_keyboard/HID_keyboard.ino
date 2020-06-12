@@ -11,8 +11,8 @@
 
 #ifdef USE_ACCEL
 #include "Wire.h"
-#include "MMA8653.h"
-MMA8653 accel;
+#include "mbSensor.h"
+MBSensor mbSensor;
 unsigned char accelKeyCodes[8] = {KEYCODE_Q, KEYCODE_W, KEYCODE_E, KEYCODE_R, KEYCODE_T, KEYCODE_Y, KEYCODE_U, KEYCODE_I};
 #endif
 
@@ -60,6 +60,8 @@ void setup() {
   char passcode[16];
   sprintf(passcode, "%06d", addressLow32bit & 0xFFFF);
 
+  //bonding not supported by sandeepmistry/arduino-BLEPeripheral
+  //use DeqingSun/arduino-BLEPeripheral
   bleHIDPeripheral.enableBond(DISPLAY_PASSKEY);
 
   bleHIDPeripheral.setEventHandler(BLEPasskeyReceived, showPasskey);
@@ -104,7 +106,7 @@ void setup() {
 #endif
 
 #ifdef USE_ACCEL
-  accel.begin(false, 2); // 8-bit mode, 2g range
+  mbSensor.init();
 #endif
 
   //enable WDT, i2c hang occasionally
@@ -249,9 +251,12 @@ void loop() {
         static unsigned long accelSampleMillis = 0;
         if ((signed int)(millis() - accelSampleMillis) > 50) {
           accelSampleMillis = millis();
-          accel.update();
-          int x = accel.getX();
-          int y = accel.getY();
+          int x = 0;
+          int y = 0;
+          mbSensor.readSensor();
+          x = mbSensor.accX / 8; //make 1024=1G
+          y = mbSensor.accY / 8;
+
           int octant = 0;
           if (x == 0) {
             if (y <= 0) octant = 0;
