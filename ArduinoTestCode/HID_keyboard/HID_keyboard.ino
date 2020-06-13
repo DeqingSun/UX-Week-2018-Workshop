@@ -8,6 +8,7 @@
 //#define ANDROID_CENTRAL
 //#define PIN2_OUTPUT
 //#define USE_ACCEL
+#define USE_PASSCODE
 
 #ifdef USE_ACCEL
 #include "Wire.h"
@@ -57,6 +58,7 @@ void setup() {
     deviceName[8 + i * 2 + 1] = toHex(d);
   }
 
+#ifdef USE_PASSCODE
   char passcode[16];
   sprintf(passcode, "%06d", addressLow32bit & 0xFFFF);
 
@@ -65,6 +67,7 @@ void setup() {
   bleHIDPeripheral.enableBond(DISPLAY_PASSKEY);
 
   bleHIDPeripheral.setEventHandler(BLEPasskeyReceived, showPasskey);
+#endif
 
   bleHIDPeripheral.setLocalName(deviceName);
   bleHIDPeripheral.setDeviceName(deviceName);
@@ -72,8 +75,9 @@ void setup() {
 
   bleHIDPeripheral.begin();
 
+#ifdef USE_PASSCODE
   bleHIDPeripheral.setStaticPasskey(passcode);
-
+#endif
 
   Serial.println();
   Serial.println(F("Experience Prototyping with IoT Devices"));
@@ -82,8 +86,10 @@ void setup() {
 
   Serial.print(F("Device Name: "));
   Serial.println(deviceName);
+#ifdef USE_PASSCODE
   Serial.print(F("Passcode: "));
   Serial.println(passcode);
+#endif
 
 #ifdef ANDROID_CENTRAL
   Serial.println(F("Android Central"));
@@ -117,13 +123,13 @@ void setup() {
 
 }
 
-
+#ifdef USE_PASSCODE
 void showPasskey(BLECentral& central) {
   // passkey generated event handler
   Serial.print("Please type this passkey on the other device = ");
   Serial.println(bleHIDPeripheral.getPasskey());
 }
-
+#endif
 
 
 void loop() {
